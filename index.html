@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>riot emulator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 Riot Emulator</h1>
+            <p>Play classic games up to PS1 in your browser</p>
+        </header>
+
+        <div class="emulator-wrapper">
+            <!-- Control Panel -->
+            <div class="control-panel">
+                <div class="form-group">
+                    <label for="system-select">Select System:</label>
+                    <select id="system-select">
+                        <option value="">Choose a console...</option>
+                        <option value="nes">Nintendo (NES)</option>
+                        <option value="snes">Super Nintendo (SNES)</option>
+                        <option value="n64">Nintendo 64 (N64)</option>
+                        <option value="gb">Game Boy (GB)</option>
+                        <option value="gbc">Game Boy Color (GBC)</option>
+                        <option value="gba">Game Boy Advance (GBA)</option>
+                        <option value="psx">PlayStation 1 (PS1)</option>
+                        <option value="segaMD">Sega Genesis/Mega Drive</option>
+                        <option value="segaMS">Sega Master System</option>
+                        <option value="segaGG">Sega Game Gear</option>
+                        <option value="atari2600">Atari 2600</option>
+                        <option value="atari7800">Atari 7800</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="rom-file">ROM File:</label>
+                    <input type="file" id="rom-file" accept=".nes,.smc,.sfc,.n64,.z64,.gb,.gbc,.gba,.bin,.cue,.iso,.md,.sms,.gg,.a26,.a78">
+                    <span class="file-name" id="file-name">No file selected</span>
+                </div>
+
+                <button id="start-btn" class="btn-primary" disabled>Start Game</button>
+                
+                <div class="info-box" id="info-box">
+                    <p>Select a system and upload a ROM file to begin</p>
+                </div>
+            </div>
+
+            <!-- Emulator Container -->
+            <div id="game-container" class="game-container">
+                <div class="placeholder">
+                    <div class="placeholder-icon">🎮</div>
+                    <p>Your game will appear here</p>
+                    <small>Select a system and load a ROM to start playing</small>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="controls-info">
+                <h3>Keyboard Controls</h3>
+                <div class="controls-grid">
+                    <div><strong>Arrow Keys:</strong> D-Pad</div>
+                    <div><strong>Z:</strong> A/Cross</div>
+                    <div><strong>X:</strong> B/Circle</div>
+                    <div><strong>A:</strong> X/Square</div>
+                    <div><strong>S:</strong> Y/Triangle</div>
+                    <div><strong>Enter:</strong> Start</div>
+                    <div><strong>Shift:</strong> Select</div>
+                    <div><strong>Q/E:</strong> L/R</div>
+                </div>
+            </div>
+            <p class="disclaimer">⚠️ Only use ROMs you legally own. This emulator is for educational purposes.</p>
+        </footer>
+    </div>
+
+    <script>
+        const EJS_player = '#game-container';
+        const EJS_core = '';
+        const EJS_gameUrl = '';
+        const EJS_pathtodata = 'https://cdn.jsdelivr.net/gh/EmulatorJS/EmulatorJS@latest/data/';
+        
+        let selectedSystem = '';
+        let selectedFile = null;
+
+        const systemSelect = document.getElementById('system-select');
+        const romFile = document.getElementById('rom-file');
+        const startBtn = document.getElementById('start-btn');
+        const fileName = document.getElementById('file-name');
+        const infoBox = document.getElementById('info-box');
+        const gameContainer = document.getElementById('game-container');
+
+        // System selection
+        systemSelect.addEventListener('change', (e) => {
+            selectedSystem = e.target.value;
+            checkReady();
+        });
+
+        // File selection
+        romFile.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                selectedFile = e.target.files[0];
+                fileName.textContent = selectedFile.name;
+                checkReady();
+            }
+        });
+
+        // Check if ready to start
+        function checkReady() {
+            if (selectedSystem && selectedFile) {
+                startBtn.disabled = false;
+                infoBox.innerHTML = '<p style="color: #10b981;">✓ Ready to start! Click "Start Game"</p>';
+            } else {
+                startBtn.disabled = true;
+            }
+        }
+
+        // Start game
+        startBtn.addEventListener('click', async () => {
+            if (!selectedSystem || !selectedFile) return;
+
+            // Clear container
+            gameContainer.innerHTML = '';
+            
+            // Show loading
+            infoBox.innerHTML = '<p style="color: #3b82f6;">⏳ Loading game...</p>';
+
+            try {
+                // Create file URL
+                const fileUrl = URL.createObjectURL(selectedFile);
+
+                // Set EJS configuration
+                window.EJS_player = '#game-container';
+                window.EJS_core = selectedSystem;
+                window.EJS_gameUrl = fileUrl;
+                window.EJS_pathtodata = 'https://cdn.jsdelivr.net/gh/EmulatorJS/EmulatorJS@latest/data/';
+
+                // Load EmulatorJS
+                const loaderScript = document.createElement('script');
+                loaderScript.src = 'https://cdn.jsdelivr.net/gh/EmulatorJS/EmulatorJS@latest/data/loader.js';
+                loaderScript.onload = () => {
+                    infoBox.innerHTML = '<p style="color: #10b981;">✓ Game loaded! Enjoy playing!</p>';
+                };
+                loaderScript.onerror = () => {
+                    infoBox.innerHTML = '<p style="color: #ef4444;">❌ Failed to load emulator. Please try again.</p>';
+                };
+                document.body.appendChild(loaderScript);
+
+            } catch (error) {
+                console.error('Error starting game:', error);
+                infoBox.innerHTML = '<p style="color: #ef4444;">❌ Error loading game. Check console for details.</p>';
+            }
+        });
+    </script>
+</body>
+</html>
