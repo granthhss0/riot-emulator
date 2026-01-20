@@ -8,3 +8,8 @@
   </a>
 
 <h3 align="center">RIOT EMULATOR</h3>
+<p align="center">
+    play any emulated rom from nes to ps1 in your browser
+    <br />
+    <br />
+  </p>
