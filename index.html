@@ -3,103 +3,363 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>riot emulator</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>RetroPlay - Browser Game Emulator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e22ce 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        .header {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .header p {
+            margin-top: 0.5rem;
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .sidebar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            height: fit-content;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .sidebar h2 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: #fff;
+        }
+
+        .form-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-section label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        select, input[type="file"] {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        select {
+            cursor: pointer;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #a78bfa;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        select option {
+            background: #1e293b;
+            color: #fff;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .file-input-wrapper input[type="file"] {
+            opacity: 0;
+            position: absolute;
+            cursor: pointer;
+        }
+
+        .file-button {
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(167, 139, 250, 0.2);
+            border: 2px dashed rgba(167, 139, 250, 0.5);
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .file-button:hover {
+            background: rgba(167, 139, 250, 0.3);
+            border-color: #a78bfa;
+        }
+
+        .file-name {
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-style: italic;
+        }
+
+        .start-button {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+            margin-top: 1.5rem;
+        }
+
+        .start-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
+        }
+
+        .start-button:disabled {
+            background: rgba(100, 100, 100, 0.3);
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .status-box {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            border-left: 4px solid #a78bfa;
+        }
+
+        .game-area {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .placeholder {
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .placeholder-icon {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+
+        .placeholder h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.8;
+        }
+
+        .placeholder p {
+            opacity: 0.6;
+        }
+
+        .controls-section {
+            margin-top: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .controls-section h3 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .control-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+        }
+
+        .control-item strong {
+            color: #a78bfa;
+        }
+
+        .warning {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        #game {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🎮 Riot Emulator</h1>
-            <p>Play classic games up to PS1 in your browser</p>
-        </header>
+    <div class="header">
+        <h1>🎮 RetroPlay</h1>
+        <p>Classic gaming in your browser - NES to PlayStation</p>
+    </div>
 
-        <div class="emulator-wrapper">
-            <!-- Control Panel -->
-            <div class="control-panel">
-                <div class="form-group">
-                    <label for="system-select">Select System:</label>
-                    <select id="system-select">
-                        <option value="">Choose a console...</option>
+    <div class="container">
+        <div class="main-grid">
+            <div class="sidebar">
+                <h2>Game Settings</h2>
+                
+                <div class="form-section">
+                    <label for="system">Console System</label>
+                    <select id="system">
+                        <option value="">Select a console...</option>
                         <option value="nes">Nintendo (NES)</option>
                         <option value="snes">Super Nintendo (SNES)</option>
                         <option value="n64">Nintendo 64 (N64)</option>
-                        <option value="gb">Game Boy (GB)</option>
-                        <option value="gbc">Game Boy Color (GBC)</option>
-                        <option value="gba">Game Boy Advance (GBA)</option>
-                        <option value="psx">PlayStation 1 (PS1)</option>
-                        <option value="segaMD">Sega Genesis/Mega Drive</option>
+                        <option value="gb">Game Boy</option>
+                        <option value="gbc">Game Boy Color</option>
+                        <option value="gba">Game Boy Advance</option>
+                        <option value="psx">PlayStation 1</option>
+                        <option value="segaMD">Sega Genesis</option>
                         <option value="segaMS">Sega Master System</option>
-                        <option value="segaGG">Sega Game Gear</option>
+                        <option value="segaGG">Game Gear</option>
                         <option value="atari2600">Atari 2600</option>
                         <option value="atari7800">Atari 7800</option>
                     </select>
                 </div>
 
-                <div class="form-group">
-                    <label for="rom-file">ROM File:</label>
-                    <input type="file" id="rom-file" accept=".nes,.smc,.sfc,.n64,.z64,.gb,.gbc,.gba,.bin,.cue,.iso,.md,.sms,.gg,.a26,.a78">
-                    <span class="file-name" id="file-name">No file selected</span>
+                <div class="form-section">
+                    <label>ROM File</label>
+                    <div class="file-input-wrapper">
+                        <input type="file" id="rom" accept=".nes,.smc,.sfc,.n64,.z64,.gb,.gbc,.gba,.bin,.cue,.iso,.md,.sms,.gg,.a26,.a78">
+                        <div class="file-button">
+                            📁 Choose ROM File
+                        </div>
+                    </div>
+                    <div class="file-name" id="fileName">No file selected</div>
                 </div>
 
-                <button id="start-btn" class="btn-primary" disabled>Start Game</button>
-                
-                <div class="info-box" id="info-box">
-                    <p>Select a system and upload a ROM file to begin</p>
+                <button class="start-button" id="startBtn" disabled>
+                    🚀 Launch Game
+                </button>
+
+                <div class="status-box" id="status">
+                    Select a system and ROM file to begin
                 </div>
             </div>
 
-            <!-- Emulator Container -->
-            <div id="game-container" class="game-container">
-                <div class="placeholder">
-                    <div class="placeholder-icon">🎮</div>
-                    <p>Your game will appear here</p>
-                    <small>Select a system and load a ROM to start playing</small>
+            <div class="game-area">
+                <div id="game">
+                    <div class="placeholder">
+                        <div class="placeholder-icon">🎮</div>
+                        <h3>Ready to Play</h3>
+                        <p>Select your console and load a ROM file</p>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <footer>
-            <div class="controls-info">
-                <h3>Keyboard Controls</h3>
-                <div class="controls-grid">
-                    <div><strong>Arrow Keys:</strong> D-Pad</div>
-                    <div><strong>Z:</strong> A/Cross</div>
-                    <div><strong>X:</strong> B/Circle</div>
-                    <div><strong>A:</strong> X/Square</div>
-                    <div><strong>S:</strong> Y/Triangle</div>
-                    <div><strong>Enter:</strong> Start</div>
-                    <div><strong>Shift:</strong> Select</div>
-                    <div><strong>Q/E:</strong> L/R</div>
-                </div>
+        <div class="controls-section">
+            <h3>⌨️ Keyboard Controls</h3>
+            <div class="controls-grid">
+                <div class="control-item"><strong>Arrow Keys:</strong> D-Pad</div>
+                <div class="control-item"><strong>Z:</strong> A / Cross</div>
+                <div class="control-item"><strong>X:</strong> B / Circle</div>
+                <div class="control-item"><strong>A:</strong> X / Square</div>
+                <div class="control-item"><strong>S:</strong> Y / Triangle</div>
+                <div class="control-item"><strong>Enter:</strong> Start</div>
+                <div class="control-item"><strong>Shift:</strong> Select</div>
+                <div class="control-item"><strong>Q / E:</strong> L / R Triggers</div>
             </div>
-            <p class="disclaimer">⚠️ Only use ROMs you legally own. This emulator is for educational purposes.</p>
-        </footer>
+        </div>
+
+        <div class="warning">
+            ⚠️ Only use ROM files you legally own. Downloading copyrighted games is illegal.
+        </div>
     </div>
 
     <script>
-        const EJS_player = '#game-container';
-        const EJS_core = '';
-        const EJS_gameUrl = '';
-        const EJS_pathtodata = 'https://cdn.jsdelivr.net/gh/EmulatorJS/EmulatorJS@latest/data/';
-        
-        let selectedSystem = '';
+        let selectedSystem = null;
         let selectedFile = null;
+        let emulatorLoaded = false;
 
-        const systemSelect = document.getElementById('system-select');
-        const romFile = document.getElementById('rom-file');
-        const startBtn = document.getElementById('start-btn');
-        const fileName = document.getElementById('file-name');
-        const infoBox = document.getElementById('info-box');
-        const gameContainer = document.getElementById('game-container');
+        const systemSelect = document.getElementById('system');
+        const romInput = document.getElementById('rom');
+        const startBtn = document.getElementById('startBtn');
+        const status = document.getElementById('status');
+        const fileName = document.getElementById('fileName');
 
-        // System selection
         systemSelect.addEventListener('change', (e) => {
             selectedSystem = e.target.value;
             checkReady();
         });
 
-        // File selection
-        romFile.addEventListener('change', (e) => {
+        romInput.addEventListener('change', (e) => {
             if (e.target.files.length > 0) {
                 selectedFile = e.target.files[0];
                 fileName.textContent = selectedFile.name;
@@ -107,51 +367,44 @@
             }
         });
 
-        // Check if ready to start
         function checkReady() {
             if (selectedSystem && selectedFile) {
                 startBtn.disabled = false;
-                infoBox.innerHTML = '<p style="color: #10b981;">✓ Ready to start! Click "Start Game"</p>';
-            } else {
-                startBtn.disabled = true;
+                status.innerHTML = '✅ Ready to launch!';
             }
         }
 
-        // Start game
-        startBtn.addEventListener('click', async () => {
-            if (!selectedSystem || !selectedFile) return;
+        startBtn.addEventListener('click', () => {
+            if (!selectedSystem || !selectedFile || emulatorLoaded) return;
 
-            // Clear container
-            gameContainer.innerHTML = '';
+            status.innerHTML = '⏳ Loading emulator...';
+            const gameDiv = document.getElementById('game');
+            gameDiv.innerHTML = '';
+
+            const gameUrl = URL.createObjectURL(selectedFile);
+
+            window.EJS_player = '#game';
+            window.EJS_core = selectedSystem;
+            window.EJS_gameUrl = gameUrl;
+            window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
+
+            const script = document.createElement('script');
+            script.src = 'https://cdn.emulatorjs.org/stable/data/loader.js';
             
-            // Show loading
-            infoBox.innerHTML = '<p style="color: #3b82f6;">⏳ Loading game...</p>';
+            script.onload = () => {
+                emulatorLoaded = true;
+                status.innerHTML = '✅ Game loaded successfully!';
+                startBtn.textContent = '🔄 Reset';
+                startBtn.disabled = false;
+            };
 
-            try {
-                // Create file URL
-                const fileUrl = URL.createObjectURL(selectedFile);
+            script.onerror = () => {
+                status.innerHTML = '❌ Failed to load emulator';
+                emulatorLoaded = false;
+            };
 
-                // Set EJS configuration
-                window.EJS_player = '#game-container';
-                window.EJS_core = selectedSystem;
-                window.EJS_gameUrl = fileUrl;
-                window.EJS_pathtodata = 'https://cdn.jsdelivr.net/gh/EmulatorJS/EmulatorJS@latest/data/';
-
-                // Load EmulatorJS
-                const loaderScript = document.createElement('script');
-                loaderScript.src = 'https://cdn.jsdelivr.net/gh/EmulatorJS/EmulatorJS@latest/data/loader.js';
-                loaderScript.onload = () => {
-                    infoBox.innerHTML = '<p style="color: #10b981;">✓ Game loaded! Enjoy playing!</p>';
-                };
-                loaderScript.onerror = () => {
-                    infoBox.innerHTML = '<p style="color: #ef4444;">❌ Failed to load emulator. Please try again.</p>';
-                };
-                document.body.appendChild(loaderScript);
-
-            } catch (error) {
-                console.error('Error starting game:', error);
-                infoBox.innerHTML = '<p style="color: #ef4444;">❌ Error loading game. Check console for details.</p>';
-            }
+            document.body.appendChild(script);
+            startBtn.disabled = true;
         });
     </script>
 </body>
