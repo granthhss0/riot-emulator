@@ -12,35 +12,87 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #0a0e17;
+            font-family: 'Courier New', monospace;
+            background: #000000;
             min-height: 100vh;
-            color: #e2e8f0;
+            color: #00ff41;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(0, 255, 65, 0.03) 0px,
+                    transparent 1px,
+                    transparent 2px,
+                    rgba(0, 255, 65, 0.03) 3px
+                );
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
         }
 
         .header {
-            background: #1a1f2e;
+            background: linear-gradient(180deg, #0a0a0a 0%, #000000 100%);
             padding: 1.5rem 2rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            border-bottom: 2px solid #2d3748;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+            border-bottom: 2px solid #00ff41;
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                #00ff41 20%, 
+                #00ff41 80%, 
+                transparent
+            );
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
 
         .header h1 {
-            font-size: 2rem;
+            font-size: 2.5rem;
             font-weight: 700;
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            color: #fff;
+            color: #00ff41;
+            text-shadow: 0 0 10px rgba(0, 255, 65, 0.8);
+            letter-spacing: 2px;
         }
 
         .header p {
             margin-top: 0.5rem;
             opacity: 0.7;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
+            color: #00ff41;
+            letter-spacing: 1px;
         }
 
-        .container {
+        .content {
             max-width: 1400px;
             margin: 0 auto;
             padding: 2rem;
@@ -48,46 +100,67 @@
 
         .main-grid {
             display: grid;
-            grid-template-columns: 380px 1fr;
+            grid-template-columns: 400px 1fr;
             gap: 2rem;
             margin-top: 2rem;
         }
 
         .sidebar {
-            background: #1a1f2e;
-            border-radius: 12px;
+            background: #0a0a0a;
+            border-radius: 0;
             padding: 2rem;
-            border: 1px solid #2d3748;
+            border: 2px solid #00ff41;
             height: fit-content;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            box-shadow: 
+                0 0 20px rgba(0, 255, 65, 0.2),
+                inset 0 0 20px rgba(0, 255, 65, 0.05);
+            position: relative;
+        }
+
+        .sidebar::before {
+            content: '> SYSTEM_CONTROL';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: #000000;
+            padding: 0 10px;
+            color: #00ff41;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
         }
 
         .sidebar h2 {
             font-size: 1.3rem;
             margin-bottom: 1.5rem;
-            color: #fff;
+            color: #00ff41;
+            text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+            letter-spacing: 2px;
         }
 
         .form-section {
             margin-bottom: 1.5rem;
+            position: relative;
         }
 
         .form-section label {
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 600;
-            font-size: 0.9rem;
-            color: #cbd5e0;
+            font-size: 0.85rem;
+            color: #00ff41;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         select, input[type="file"] {
             width: 100%;
             padding: 0.75rem;
-            border-radius: 8px;
-            border: 1px solid #2d3748;
-            background: #0f1419;
-            color: #e2e8f0;
-            font-size: 0.95rem;
+            border-radius: 0;
+            border: 1px solid #00ff41;
+            background: #000000;
+            color: #00ff41;
+            font-size: 0.9rem;
+            font-family: 'Courier New', monospace;
             transition: all 0.3s;
         }
 
@@ -97,13 +170,12 @@
 
         select:focus {
             outline: none;
-            border-color: #4299e1;
-            background: #1a1f2e;
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
         }
 
         select option {
-            background: #1a1f2e;
-            color: #e2e8f0;
+            background: #0a0a0a;
+            color: #00ff41;
         }
 
         .file-input-wrapper {
@@ -121,47 +193,78 @@
             display: block;
             width: 100%;
             padding: 0.75rem;
-            background: #0f1419;
-            border: 2px dashed #2d3748;
-            border-radius: 8px;
+            background: #000000;
+            border: 1px dashed #00ff41;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s;
+            color: #00ff41;
+            font-family: 'Courier New', monospace;
         }
 
         .file-button:hover {
-            background: #1a1f2e;
-            border-color: #4299e1;
+            background: rgba(0, 255, 65, 0.1);
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
         }
 
         .file-name {
             margin-top: 0.5rem;
-            font-size: 0.85rem;
-            color: #718096;
-            font-style: italic;
+            font-size: 0.75rem;
+            color: #00ff41;
+            opacity: 0.6;
+        }
+
+        .auto-detect {
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(0, 255, 65, 0.05);
+            border-left: 2px solid #00ff41;
+            font-size: 0.75rem;
+            color: #00ff41;
         }
 
         .start-button {
             width: 100%;
             padding: 1rem;
-            background: #3182ce;
-            border: none;
-            border-radius: 8px;
-            color: white;
+            background: #000000;
+            border: 2px solid #00ff41;
+            color: #00ff41;
             font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
             margin-top: 1.5rem;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .start-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .start-button:hover:not(:disabled)::before {
+            left: 100%;
         }
 
         .start-button:hover:not(:disabled) {
-            background: #2c5282;
-            transform: translateY(-1px);
+            box-shadow: 
+                0 0 20px rgba(0, 255, 65, 0.5),
+                inset 0 0 20px rgba(0, 255, 65, 0.1);
+            background: rgba(0, 255, 65, 0.1);
         }
 
         .start-button:disabled {
-            background: #2d3748;
+            border-color: #003311;
+            color: #003311;
             cursor: not-allowed;
             opacity: 0.5;
         }
@@ -169,62 +272,107 @@
         .status-box {
             margin-top: 1.5rem;
             padding: 1rem;
-            background: #0f1419;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            border-left: 4px solid #4299e1;
+            background: rgba(0, 255, 65, 0.05);
+            font-size: 0.85rem;
+            border-left: 3px solid #00ff41;
+            font-family: 'Courier New', monospace;
         }
 
         .game-area {
-            background: #1a1f2e;
-            border-radius: 12px;
-            border: 1px solid #2d3748;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            background: #0a0a0a;
+            border: 2px solid #00ff41;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 65, 0.2),
+                inset 0 0 20px rgba(0, 255, 65, 0.05);
             overflow: hidden;
             position: relative;
+            height: fit-content;
+        }
+
+        .game-area::before {
+            content: '> DISPLAY_OUTPUT';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: #000000;
+            padding: 0 10px;
+            color: #00ff41;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            z-index: 10;
         }
 
         .game-container {
             width: 100%;
-            height: 600px;
+            height: auto;
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
+            background: #000000;
         }
 
         .placeholder {
             text-align: center;
             padding: 3rem;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
         .placeholder-icon {
             font-size: 5rem;
             margin-bottom: 1rem;
             opacity: 0.3;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
         .placeholder h3 {
             font-size: 1.5rem;
             margin-bottom: 0.5rem;
-            opacity: 0.8;
+            color: #00ff41;
+            text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+            letter-spacing: 2px;
         }
 
         .placeholder p {
             opacity: 0.5;
+            letter-spacing: 1px;
         }
 
         .controls-section {
             margin-top: 2rem;
-            background: #1a1f2e;
-            border-radius: 12px;
+            background: #0a0a0a;
             padding: 2rem;
-            border: 1px solid #2d3748;
+            border: 2px solid #00ff41;
+            position: relative;
+        }
+
+        .controls-section::before {
+            content: '> INPUT_MAPPING';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: #000000;
+            padding: 0 10px;
+            color: #00ff41;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
         }
 
         .controls-section h3 {
             margin-bottom: 1rem;
             font-size: 1.2rem;
+            color: #00ff41;
+            text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+            letter-spacing: 2px;
         }
 
         .controls-grid {
@@ -234,35 +382,38 @@
         }
 
         .control-item {
-            background: #0f1419;
+            background: #000000;
             padding: 0.75rem;
-            border-radius: 8px;
             font-size: 0.85rem;
-            border: 1px solid #2d3748;
+            border: 1px solid #00ff41;
+            transition: all 0.3s;
+        }
+
+        .control-item:hover {
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
+            background: rgba(0, 255, 65, 0.05);
         }
 
         .control-item strong {
-            color: #4299e1;
+            color: #00ff41;
+            text-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
         }
 
         .warning {
-            background: #2d1f1f;
-            border: 1px solid #742a2a;
-            border-radius: 8px;
+            background: #0a0000;
+            border: 2px solid #ff0000;
             padding: 1rem;
             margin-top: 2rem;
             text-align: center;
-            font-size: 0.9rem;
-            color: #fc8181;
+            font-size: 0.85rem;
+            color: #ff0000;
+            text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+            letter-spacing: 1px;
         }
 
         @media (max-width: 1024px) {
             .main-grid {
                 grid-template-columns: 1fr;
-            }
-            
-            .game-container {
-                height: 400px;
             }
         }
 
@@ -271,113 +422,111 @@
             width: 100%;
             height: 100%;
             position: relative;
+            background: #000000;
         }
 
         #game-display > div {
             max-width: 100% !important;
-            max-height: 600px !important;
             margin: 0 auto !important;
         }
 
         #game-display canvas {
             max-width: 100% !important;
-            max-height: 600px !important;
             object-fit: contain !important;
             display: block !important;
             margin: 0 auto !important;
         }
-
-        /* Prevent stretching */
-        .ejs_container {
-            max-height: 600px !important;
-            overflow: hidden !important;
-        }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>🎮 RetroPlay</h1>
-        <p>Classic gaming in your browser - NES to PlayStation</p>
-    </div>
-
     <div class="container">
-        <div class="main-grid">
-            <div class="sidebar">
-                <h2>Game Settings</h2>
-                
-                <div class="form-section">
-                    <label for="system">Console System</label>
-                    <select id="system">
-                        <option value="">Select a console...</option>
-                        <option value="nes">Nintendo (NES)</option>
-                        <option value="snes">Super Nintendo (SNES)</option>
-                        <option value="n64">Nintendo 64 (N64)</option>
-                        <option value="gb">Game Boy</option>
-                        <option value="gbc">Game Boy Color</option>
-                        <option value="gba">Game Boy Advance</option>
-                        <option value="psx">PlayStation 1</option>
-                        <option value="segaMD">Sega Genesis</option>
-                        <option value="segaMS">Sega Master System</option>
-                        <option value="segaGG">Game Gear</option>
-                        <option value="atari2600">Atari 2600</option>
-                        <option value="atari7800">Atari 7800</option>
-                    </select>
-                </div>
-
-                <div class="form-section">
-                    <label>ROM File</label>
-                    <div class="file-input-wrapper">
-                        <input type="file" id="rom" accept=".nes,.smc,.sfc,.n64,.z64,.gb,.gbc,.gba,.bin,.cue,.iso,.md,.sms,.gg,.a26,.a78">
-                        <div class="file-button">
-                            📁 Choose ROM File
-                        </div>
-                    </div>
-                    <div class="file-name" id="fileName">No file selected</div>
-                </div>
-
-                <button class="start-button" id="startBtn" disabled>
-                    🚀 Launch Game
-                </button>
-
-                <div class="status-box" id="status">
-                    Select a system and ROM file to begin
-                </div>
-            </div>
-
-            <div class="game-area">
-                <div class="game-container">
-                    <div id="game-display">
-                        <div class="placeholder">
-                            <div class="placeholder-icon">🎮</div>
-                            <h3>Ready to Play</h3>
-                            <p>Select your console and load a ROM file</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="header">
+            <h1>█ RETROPLAY</h1>
+            <p>> NEURAL EMULATION SYSTEM v2.1.0</p>
         </div>
 
-        <div class="controls-section">
-            <h3>⌨️ Keyboard Controls</h3>
-            <div class="controls-grid">
-                <div class="control-item"><strong>Arrow Keys:</strong> D-Pad</div>
-                <div class="control-item"><strong>Z:</strong> A / Cross</div>
-                <div class="control-item"><strong>X:</strong> B / Circle</div>
-                <div class="control-item"><strong>A:</strong> X / Square</div>
-                <div class="control-item"><strong>S:</strong> Y / Triangle</div>
-                <div class="control-item"><strong>Enter:</strong> Start</div>
-                <div class="control-item"><strong>Shift:</strong> Select</div>
-                <div class="control-item"><strong>Q / E:</strong> L / R Triggers</div>
-            </div>
-        </div>
+        <div class="content">
+            <div class="main-grid">
+                <div class="sidebar">
+                    <h2>█ CONTROLS</h2>
+                    
+                    <div class="form-section">
+                        <label for="system">> Console System</label>
+                        <select id="system">
+                            <option value="">AUTO-DETECT</option>
+                            <option value="nes">Nintendo (NES)</option>
+                            <option value="snes">Super Nintendo (SNES)</option>
+                            <option value="n64">Nintendo 64 (N64)</option>
+                            <option value="gb">Game Boy</option>
+                            <option value="gbc">Game Boy Color</option>
+                            <option value="gba">Game Boy Advance</option>
+                            <option value="psx">PlayStation 1</option>
+                            <option value="segaMD">Sega Genesis</option>
+                            <option value="segaMS">Sega Master System</option>
+                            <option value="segaGG">Game Gear</option>
+                            <option value="atari2600">Atari 2600</option>
+                            <option value="atari7800">Atari 7800</option>
+                        </select>
+                        <div class="auto-detect" id="autoDetect" style="display: none;">
+                            > AUTO-DETECTED: <span id="detectedSystem"></span>
+                        </div>
+                    </div>
 
-        <div class="warning">
-            ⚠️ Only use ROM files you legally own. Downloading copyrighted games is illegal.
+                    <div class="form-section">
+                        <label>> ROM File</label>
+                        <div class="file-input-wrapper">
+                            <input type="file" id="rom" accept=".nes,.smc,.sfc,.n64,.z64,.gb,.gbc,.gba,.bin,.cue,.iso,.md,.sms,.gg,.a26,.a78">
+                            <div class="file-button">
+                                > UPLOAD ROM FILE
+                            </div>
+                        </div>
+                        <div class="file-name" id="fileName">> NO FILE LOADED</div>
+                    </div>
+
+                    <button class="start-button" id="startBtn" disabled>
+                        > INITIALIZE
+                    </button>
+
+                    <div class="status-box" id="status">
+                        > AWAITING INPUT...
+                    </div>
+                </div>
+
+                <div class="game-area">
+                    <div class="game-container">
+                        <div id="game-display">
+                            <div class="placeholder">
+                                <div class="placeholder-icon">▓</div>
+                                <h3>READY</h3>
+                                <p>> LOAD ROM TO BEGIN</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls-section">
+                <h3>█ INPUT MAPPING</h3>
+                <div class="controls-grid">
+                    <div class="control-item"><strong>ARROW KEYS:</strong> D-PAD</div>
+                    <div class="control-item"><strong>Z:</strong> A / CROSS</div>
+                    <div class="control-item"><strong>X:</strong> B / CIRCLE</div>
+                    <div class="control-item"><strong>A:</strong> X / SQUARE</div>
+                    <div class="control-item"><strong>S:</strong> Y / TRIANGLE</div>
+                    <div class="control-item"><strong>ENTER:</strong> START</div>
+                    <div class="control-item"><strong>SHIFT:</strong> SELECT</div>
+                    <div class="control-item"><strong>Q / E:</strong> L / R</div>
+                </div>
+            </div>
+
+            <div class="warning">
+                ⚠ WARNING: UNAUTHORIZED ROM USAGE PROHIBITED ⚠
+            </div>
         </div>
     </div>
 
     <script>
-        let selectedSystem = null;
+        let selectedSystem = '';
         let selectedFile = null;
         let isLoading = false;
 
@@ -386,16 +535,78 @@
         const startBtn = document.getElementById('startBtn');
         const status = document.getElementById('status');
         const fileName = document.getElementById('fileName');
+        const autoDetect = document.getElementById('autoDetect');
+        const detectedSystem = document.getElementById('detectedSystem');
+
+        // Auto-detect console from file extension
+        function detectConsole(filename) {
+            const ext = filename.toLowerCase().split('.').pop();
+            const consoleMap = {
+                'nes': 'nes',
+                'smc': 'snes',
+                'sfc': 'snes',
+                'n64': 'n64',
+                'z64': 'n64',
+                'gb': 'gb',
+                'gbc': 'gbc',
+                'gba': 'gba',
+                'bin': 'psx',
+                'cue': 'psx',
+                'iso': 'psx',
+                'md': 'segaMD',
+                'gen': 'segaMD',
+                'sms': 'segaMS',
+                'gg': 'segaGG',
+                'a26': 'atari2600',
+                'a78': 'atari7800'
+            };
+            return consoleMap[ext] || null;
+        }
+
+        function getConsoleName(core) {
+            const nameMap = {
+                'nes': 'NES',
+                'snes': 'SNES',
+                'n64': 'N64',
+                'gb': 'GAME BOY',
+                'gbc': 'GAME BOY COLOR',
+                'gba': 'GAME BOY ADVANCE',
+                'psx': 'PLAYSTATION 1',
+                'segaMD': 'SEGA GENESIS',
+                'segaMS': 'SEGA MASTER SYSTEM',
+                'segaGG': 'GAME GEAR',
+                'atari2600': 'ATARI 2600',
+                'atari7800': 'ATARI 7800'
+            };
+            return nameMap[core] || 'UNKNOWN';
+        }
 
         systemSelect.addEventListener('change', (e) => {
             selectedSystem = e.target.value;
+            if (selectedSystem === '') {
+                autoDetect.style.display = 'none';
+            }
             checkReady();
         });
 
         romInput.addEventListener('change', (e) => {
             if (e.target.files.length > 0) {
                 selectedFile = e.target.files[0];
-                fileName.textContent = selectedFile.name;
+                fileName.textContent = `> ${selectedFile.name}`;
+                
+                // Auto-detect if set to auto
+                if (systemSelect.value === '') {
+                    const detected = detectConsole(selectedFile.name);
+                    if (detected) {
+                        selectedSystem = detected;
+                        detectedSystem.textContent = getConsoleName(detected);
+                        autoDetect.style.display = 'block';
+                        status.innerHTML = `> DETECTED: ${getConsoleName(detected)}`;
+                    } else {
+                        status.innerHTML = '> WARNING: UNABLE TO AUTO-DETECT. SELECT CONSOLE MANUALLY.';
+                    }
+                }
+                
                 checkReady();
             }
         });
@@ -403,7 +614,7 @@
         function checkReady() {
             if (selectedSystem && selectedFile) {
                 startBtn.disabled = false;
-                status.innerHTML = '✅ Ready to launch!';
+                status.innerHTML = '> SYSTEM READY. PRESS INITIALIZE.';
             }
         }
 
@@ -411,7 +622,7 @@
             if (!selectedSystem || !selectedFile || isLoading) return;
 
             isLoading = true;
-            status.innerHTML = '⏳ Loading emulator...';
+            status.innerHTML = '> INITIALIZING EMULATOR...';
             startBtn.disabled = true;
 
             const gameDisplay = document.getElementById('game-display');
@@ -419,27 +630,22 @@
 
             const gameUrl = URL.createObjectURL(selectedFile);
 
-            // Set global variables for EmulatorJS
             window.EJS_player = '#game-display';
             window.EJS_core = selectedSystem;
             window.EJS_gameUrl = gameUrl;
             window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
-            
-            // Additional settings to prevent issues
             window.EJS_startOnLoaded = true;
             window.EJS_biosUrl = '';
             window.EJS_gameID = null;
 
-            // Remove any existing emulator scripts
             const existingScripts = document.querySelectorAll('script[src*="emulatorjs"]');
             existingScripts.forEach(script => script.remove());
 
-            // Load emulator
             const script = document.createElement('script');
             script.src = 'https://cdn.emulatorjs.org/stable/data/loader.js';
             
             let loadTimeout = setTimeout(() => {
-                status.innerHTML = '❌ Loading timeout - please try again';
+                status.innerHTML = '> ERROR: LOAD TIMEOUT';
                 isLoading = false;
                 startBtn.disabled = false;
             }, 30000);
@@ -447,14 +653,14 @@
             script.onload = () => {
                 clearTimeout(loadTimeout);
                 setTimeout(() => {
-                    status.innerHTML = '✅ Game loaded! Use keyboard controls to play';
+                    status.innerHTML = `> RUNNING: ${getConsoleName(selectedSystem)}`;
                     isLoading = false;
                 }, 2000);
             };
 
             script.onerror = () => {
                 clearTimeout(loadTimeout);
-                status.innerHTML = '❌ Failed to load emulator - check your internet connection';
+                status.innerHTML = '> ERROR: CONNECTION FAILED';
                 isLoading = false;
                 startBtn.disabled = false;
             };
