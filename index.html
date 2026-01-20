@@ -121,14 +121,7 @@
             color: #666666;
         }
 
-        .auto-detect {
-            margin-top: 0.5rem;
-            padding: 0.75rem;
-            background: #0a0a0a;
-            border-left: 3px solid #4a4a4a;
-            font-size: 0.8rem;
-            color: #888888;
-        }
+
 
         .start-button {
             width: 100%;
@@ -270,7 +263,7 @@
                             CHOOSE FILE
                         </div>
                     </div>
-                    <div class="file-name" id="fileName">No file selected.</div>
+                    <div class="file-name" id="fileName">No file selected</div>
                 </div>
 
                 <button class="start-button" id="startBtn" disabled>
@@ -308,8 +301,6 @@
         const startBtn = document.getElementById('startBtn');
         const status = document.getElementById('status');
         const fileName = document.getElementById('fileName');
-        const autoDetect = document.getElementById('autoDetect');
-        const detectedSystem = document.getElementById('detectedSystem');
 
         // Auto-detect console from file extension
         function detectConsole(filename) {
@@ -363,9 +354,7 @@
                 const detected = detectConsole(selectedFile.name);
                 if (detected) {
                     selectedSystem = detected;
-                    detectedSystem.textContent = getConsoleName(detected);
-                    autoDetect.style.display = 'block';
-                    status.textContent = `Ready to play ${getConsoleName(detected)}`;
+                    status.textContent = 'Ready to start';
                     startBtn.disabled = false;
                 } else {
                     status.textContent = 'Unable to detect console. Please check file extension.';
